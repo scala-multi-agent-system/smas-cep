@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<smas>
+    <version>0.1</version>
+    <holons>
+        <holon>
+            <host>localhost</host>
+            <port>2554</port>
+
+            <nodes>
+                <node>
+                    <class>de.hsaugsburg.cep.agent.EPANode</class>
+                    <plugins>
+                        <plugin>
+                            <name>EPAPlugin</name>
+                            <class>de.hsaugsburg.cep.agent.EPAPlugin</class>
+                        </plugin>
+                    </plugins>
+                </node>
+            </nodes>
+        </holon>
+    </holons>
+</smas>
