@@ -25,7 +25,7 @@ object MockOnthologie extends OnthologieService {
     false
   }
   
-  def isSensor(sensorId: String, changeType: ChangeType): Boolean = {
+  def isSensor(sensorId: String, changeType: ChangeType.ChangeType): Boolean = {
     false
   }
 
