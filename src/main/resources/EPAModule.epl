@@ -3,6 +3,10 @@ module EPAModule;
 //import event classes
 import de.hsaugsburg.cep.model.*; 
 
+/*
+TODO generate useful event id for all events
+*/
+
 @Name("AllSensorEvents")
 @Description("Detects all sensor events")
 select * from SensorEvent;
@@ -19,34 +23,26 @@ select 'TestMoveEvent' as eventId,
 	where isNeighbour(fromSensor.sensorId, toSensor.sensorId);
 	//TODO Ereignisse konsumieren oder Zeitfenster? eventId und itemId korrekt vergeben
 	
-/*
-TODO how to recognize 'changeType'
-TODO how to detect entry/removal? Context or just sensor id?
-TODO generate useful event id
 @Name("DetectItemsChangedEvent")
-@Description("Detects when a work item enters or leaves the industrial system.")
+@Description("Detects when a work item enters or leaves the industrial plant.")
 insert into ItemsChangedEvent
 select 'NewItemsChangedEvent' as eventId,
-	event.timestamp as timestamp, TODO timestamp = timestamp of the the event (should be caused by a single event?)
-	as itemId,
-	as changeType
-	from pattern[] TODO pattern needed?
-	where is ;
-*/
+	event.timestamp as timestamp,
+	'SomeItem' as itemId,
+	getChangeSensorType(sensor.sensorId) as changeType
+	from pattern[every sensor=SensorEvent(state=true)]
+	where isChangeSensor(sensor.sensorId);
 
-/*
-TODO how to recognize the sensor? Context or sensor id?
-TODO differentiation of start and stop? Probably useful...
-TODO per machine there should be 2 sensors (or more)? down and up position, change query method?
 @Name("DetectWorkEvent")
 @Description("Detects when a work item is being in manufactured by a machine.")
 insert into WorkEvent
-select '' as eventId,
+select 'NewWorkEvent' as eventId,
 	event.timestamp as timestamp,
-	... as itemId,
-	... as workerId
-	from ...;
-*/
+	'SomeItem' as itemId,
+	getMachineId(sensor.sensorId) as workerId,
+	getMachineWorkType(sensor.sensorId) as work
+	from pattern[every sensor=SensorEvent(state=true)]
+	where isMachineSensor(sensor.sensorId);
 
 @Name("AllMoveEvents")
 @Description("Listens to all new ItemMovedEvent")

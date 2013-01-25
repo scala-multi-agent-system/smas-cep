@@ -2,8 +2,9 @@ package de.hsaugsburg.cep.agent
 
 import org.apache.log4j.Logger
 import de.hsaugsburg.cep.model.ChangeType
+import de.hsaugsburg.cep.model.Work
 
-object MockOnthologie extends OnthologieService {
+object MockOnthologie extends OntologyService {
 
   private val log = Logger.getLogger(MockOnthologie.getClass())
 
@@ -20,13 +21,23 @@ object MockOnthologie extends OnthologieService {
       case _ => List.empty[String]
     }
   }
-
-  def isWorkerMachine(sensorId: String): Boolean = {
-    false
-  }
-  
-  def isSensor(sensorId: String, changeType: ChangeType.ChangeType): Boolean = {
-    false
-  }
+	def isMachineSensor(sensorId: String): Boolean = {
+	  false
+	}
+	
+	def getMachineId(sensorId: String): String = {
+	  "machine01"
+	}
+	def getMachineWorkType(sensorId: String): Work.Work = {
+	  Work.Begin
+	}
+	
+	def isChangeSensor(sensorId: String): Boolean = {
+	  false
+	}
+	
+	def getChangeSensorType(sensorId: String): ChangeType.ChangeType = {
+	  ChangeType.Added
+	}
 
 }
