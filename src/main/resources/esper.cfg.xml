@@ -43,4 +43,10 @@ http://www.espertech.com/schema/esper/esper-configuration-4.0.xsd">
         <legacy-type accessor-style="public" code-generation="enabled"
                      property-resolution-style="case_sensitive"/>
     </event-type>
+
+    <engine-settings>
+        <defaults>
+            <execution prioritized="true"/>
+        </defaults>
+    </engine-settings>
 </esper-configuration>

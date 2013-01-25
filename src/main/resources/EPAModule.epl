@@ -9,6 +9,7 @@ import de.hsaugsburg.cep.model.*;
 
 @Name("DetectMoveEvent")
 @Description("Detects a movement of a component")
+@Drop
 insert into ItemMovedEvent
 select 'TestMoveEvent' as eventId,
 	toSensor.timestamp as timestamp,
@@ -20,6 +21,7 @@ select 'TestMoveEvent' as eventId,
 	
 @Name("DetectItemsChangedEvent")
 @Description("Detects when a work item enters or leaves the industrial plant.")
+@Drop
 insert into ItemsChangedEvent
 select 'NewItemsChangedEvent' as eventId,
 	timestamp as timestamp,
@@ -30,6 +32,7 @@ select 'NewItemsChangedEvent' as eventId,
 
 @Name("DetectWorkEvent")
 @Description("Detects when a work item is being in manufactured by a machine.")
+@Drop
 insert into WorkEvent
 select 'NewWorkEvent' as eventId,
 	timestamp as timestamp,
