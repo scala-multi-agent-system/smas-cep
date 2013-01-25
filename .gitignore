@@ -18,5 +18,8 @@ project/plugins/project/
 .project
 .settings/
 
+# IDEA specific
+.idea
+
 # Akka specific
 akka.log*
