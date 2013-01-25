@@ -8,7 +8,7 @@ import de.hsaugsburg.cep.model.SensorEvent
 import org.apache.log4j.Logger
 
 /**
- * Initializes und manages the Esper cep engine.
+ * Initializes and manages the Esper cep engine.
  */
 class EPAPlugin extends SmasPlugin {
 
@@ -34,8 +34,7 @@ class EPAPlugin extends SmasPlugin {
   }
 
   def handleSensorEvent(event: SensorEvent) {
-    val serviceProvider = EPServiceProviderManager.getProvider(EPANode.serviceProviderID)
-    serviceProvider.getEPRuntime.sendEvent(event)
+	  EsperHandler.sendEvent(event)
   }
 
   //  TODO add method to register/unregister EPLs at runtime

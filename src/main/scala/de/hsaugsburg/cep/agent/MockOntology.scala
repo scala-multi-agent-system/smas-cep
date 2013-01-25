@@ -22,7 +22,7 @@ object MockOntology extends OntologyService {
     }
   }
 	def isMachineSensor(sensorId: String): Boolean = {
-	  false
+	  sensorId.startsWith("sensorWork")
 	}
 	
 	def getMachineId(sensorId: String): String = {
@@ -33,11 +33,19 @@ object MockOntology extends OntologyService {
 	}
 	
 	def isChangeSensor(sensorId: String): Boolean = {
-	  false
+	  sensorId match {
+	    case "inSensor" => true
+	    case "outSensor" => true
+	    case _ => false
+	  }
 	}
 	
 	def getChangeSensorType(sensorId: String): ChangeType.ChangeType = {
-	  ChangeType.Added
+	  sensorId match {
+	    case "inSensor" => ChangeType.Added
+	    case "outSensor" => ChangeType.Removed
+	    case _ => throw new IllegalStateException("isChangeSensor must return true for the specified sensorId")
+	  }
 	}
 
 }

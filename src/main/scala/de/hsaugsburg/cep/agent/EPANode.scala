@@ -12,19 +12,16 @@ import com.espertech.esper.client.deploy.DeploymentException
 
 class EPANode extends SmasNode {
 
-  private var moduleId: Option[String] = None
+  private var handler: Option[EsperHandler] = None
 
   def onStart() {
     try {
       manager ! RegisterService("EPAService", me)
 
-      val serviceProvider = configureServiceProvider(EPANode.configFile)
+      handler = Some(new EsperHandler(EsperHandler.configFile, EsperHandler.moduleFile))
 
-      val result = loadModule(EPANode.moduleFile, serviceProvider)
-      moduleId = Some(result.getDeploymentId)
-
-      val epl = serviceProvider.getEPAdministrator.getStatement(EPANode.AllMoveEvents)
-      epl addListener new LogUpdateListener()
+      val epl = handler.get.getStatement(EsperHandler.AllMoveEvents)
+      epl addListener new LogAllEventsUpdateListener("MoveEvent")
 
       log.info("Event Processing Agent started")
     } catch {
@@ -33,56 +30,11 @@ class EPANode extends SmasNode {
   }
 
   def onStop() {
-    moduleId match {
+    handler match {
       case None => log.error("No Module was registered. Did the node start correctly?")
-      case Some(id) =>
-        val serviceProvider = EPServiceProviderManager.getProvider(EPANode.serviceProviderID)
-        val deployAdmin = serviceProvider.getEPAdministrator.getDeploymentAdmin
-        deployAdmin.undeployRemove(id)
+      case Some(id) => handler.get.undeploy()
     }
     log.info("Event Processing Agent stopped")
   }
 
-  @throws(classOf[IOException])
-  @throws(classOf[DeploymentException])
-  @throws(classOf[ParseException])
-  private def loadModule(fileName: String, serviceProvider: EPServiceProvider): DeploymentResult = {
-    val deployAdmin = serviceProvider.getEPAdministrator.getDeploymentAdmin
-    val module = deployAdmin.read(fileName)
-    val options = new DeploymentOptions
-    deployAdmin.deploy(module, options)
-  }
-
-  @throws(classOf[EPException])
-  @throws(classOf[ConfigurationException])
-  private def configureServiceProvider(configFile: String): EPServiceProvider = {
-    val config = new Configuration()
-    config.configure(configFile)
-    EPServiceProviderManager.getProvider(EPANode.serviceProviderID, config)
-  }
-
-}
-
-object EPANode {
-  private val configFile = "esper.cfg.xml"
-  private val moduleFile = "EPAModule.epl"
-
-  private val DetectMoveEvent = "DetectMoveEvent"
-  private val DetectItemsChangedEvent = "DetectItemsChangedEvent"
-  private val DetectWorkEvent = "DetectWorkEvent"
-  
-  private val AllSensorEvents = "AllSensorEvents"
-  private val AllMoveEvents = "AllMoveEvents"
-    
-  val serviceProviderID = "EPAServiceProvider"
-}
-
-class LogUpdateListener extends UpdateListener {
-
-  private val log = Logger.getLogger(classOf[LogUpdateListener])
-
-  def update(newEvents: Array[EventBean], oldEvents: Array[EventBean]) {
-    val event = newEvents(0)
-    log.info("New MoveEvent: " + event.get("eventId"))
-  }
 }
