@@ -1,6 +1,7 @@
 *.class
 *.log
 .classpath
+.DS_Store
 
 # sbt specific
 dist/*
@@ -20,6 +21,7 @@ project/plugins/project/
 
 # IDEA specific
 .idea
+*.iml
 
 # Akka specific
 akka.log*
