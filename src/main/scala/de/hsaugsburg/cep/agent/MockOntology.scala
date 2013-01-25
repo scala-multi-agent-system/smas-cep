@@ -4,9 +4,9 @@ import org.apache.log4j.Logger
 import de.hsaugsburg.cep.model.ChangeType
 import de.hsaugsburg.cep.model.Work
 
-object MockOnthologie extends OntologyService {
+object MockOntology extends OntologyService {
 
-  private val log = Logger.getLogger(MockOnthologie.getClass())
+  private val log = Logger.getLogger(MockOntology.getClass)
 
   def isNeighbour(sensorId: String, otherSensorId: String): Boolean = {
     val result = getNeighbours(sensorId).contains(otherSensorId)

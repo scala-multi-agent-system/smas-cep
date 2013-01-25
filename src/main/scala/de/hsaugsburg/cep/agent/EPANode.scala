@@ -4,10 +4,7 @@ import de.hsaugsburg.smas.node.SmasNode
 import com.espertech.esper.client._
 import de.hsaugsburg.smas.services.messages.RegisterService
 import org.apache.log4j.Logger
-import de.hsaugsburg.cep.model.SensorEvent
-import java.io.File
 import java.io.IOException
-import com.espertech.esper.client.deploy.Module
 import com.espertech.esper.client.deploy.DeploymentOptions
 import com.espertech.esper.client.deploy.DeploymentResult
 import com.espertech.esper.client.deploy.ParseException
@@ -17,16 +14,14 @@ class EPANode extends SmasNode {
 
   private var moduleId: Option[String] = None
 
-  def onStart(): Unit = {
+  def onStart() {
     try {
       manager ! RegisterService("EPAService", me)
 
-      val testfile = new File(EPANode.configFile)
-      println(testfile.getCanonicalPath() + " : " + testfile.exists())
       val serviceProvider = configureServiceProvider(EPANode.configFile)
 
       val result = loadModule(EPANode.moduleFile, serviceProvider)
-      moduleId = Some(result.getDeploymentId())
+      moduleId = Some(result.getDeploymentId)
 
       val epl = serviceProvider.getEPAdministrator.getStatement(EPANode.AllMoveEvents)
       epl addListener new LogUpdateListener()
@@ -37,7 +32,7 @@ class EPANode extends SmasNode {
     }
   }
 
-  def onStop(): Unit = {
+  def onStop() {
     moduleId match {
       case None => log.error("No Module was registered. Did the node start correctly?")
       case Some(id) =>

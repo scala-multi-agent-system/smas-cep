@@ -9,15 +9,12 @@ import org.apache.log4j.Logger
 
 /**
  * Initializes und manages the Esper cep engine.
- *
- * @author elohan
- *
  */
 class EPAPlugin extends SmasPlugin {
 
-  def onStop(): Boolean = { true }
+  def onStop: Boolean = { true }
 
-  def onStart(): Boolean = {
+  def onStart: Boolean = {
     true
     //    TODO change name to real name of service, currently there is none
     /*def eventSources = node ?? RequestForService("EventSourceService")
@@ -38,7 +35,7 @@ class EPAPlugin extends SmasPlugin {
 
   def handleSensorEvent(event: SensorEvent) {
     val serviceProvider = EPServiceProviderManager.getProvider(EPANode.serviceProviderID)
-    serviceProvider.getEPRuntime().sendEvent(event)
+    serviceProvider.getEPRuntime.sendEvent(event)
   }
 
   //  TODO add method to register/unregister EPLs at runtime
