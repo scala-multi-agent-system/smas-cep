@@ -43,9 +43,12 @@ class EsperHandler(val configFile: String, val moduleFile: String) {
   }
 
   def undeploy() {
-    val serviceProvider = EPServiceProviderManager.getProvider(EsperHandler.serviceProviderID)
     val deployAdmin = serviceProvider.getEPAdministrator.getDeploymentAdmin
     deployAdmin.undeployRemove(deploymentResult.getDeploymentId)
+  }
+
+  def sendEvent(event: SensorEvent) {
+    serviceProvider.getEPRuntime.sendEvent(event)
   }
 }
 

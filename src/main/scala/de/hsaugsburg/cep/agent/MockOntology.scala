@@ -16,6 +16,12 @@ object MockOntology extends OntologyService {
 
   private def getNeighbours(sensorId: String): List[String] = {
     sensorId match {
+      case "inSensor" => List("sensorDistr01")
+      case "sensorDistr01" => List("sensorM01Pos01")
+      case "sensorM01Pos01" => List("sensorM01Pos02")
+      case "sensorM01Pos02"  => List("sensorM01Pos03")
+      case "sensorM01Pos03" => List("sensorOut01")
+      case "sensorOut01" => List("outSensor")
       case "sensor01" => List("sensor04", "sensor08")
       case "sensor02" => List("sensor03", "sensor05", "sensor06")
       case _ => List.empty[String]
