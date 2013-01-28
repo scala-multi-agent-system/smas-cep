@@ -1,8 +1,7 @@
 package de.hsaugsburg.cep.agent.example
 
-import de.hsaugsburg.cep.model.SensorEvent
+import de.hsaugsburg.cep.model.{SensorState, SensorEvent, ChangeType}
 import de.hsaugsburg.cep.agent.{LogAllEventsUpdateListener, EsperHandler}
-import de.hsaugsburg.cep.model.ChangeType
 import org.apache.log4j.Logger
 
 /**
@@ -63,18 +62,18 @@ object ExampleTest extends App {
 
   def sendMoveEvent(sourceId: String, targetId: String) {
     log.info("Sending MoveEvent from '" + sourceId + "' to '" + targetId + "'")
-    val sourceEvent = newSensorEvent(state = false, sourceId)
+    val sourceEvent = newSensorEvent(SensorState.Off, sourceId)
     EsperHandler.sendEvent(sourceEvent)
 
     Thread.sleep(500)
 
-    val targetEvent = newSensorEvent(state = true, targetId)
+    val targetEvent = newSensorEvent(SensorState.On, targetId)
     EsperHandler.sendEvent(targetEvent)
   }
 
   def sendWorkEvent(workSensor : String) {
     log.info("Sending WorkEvent for sensor '" + workSensor + "'")
-    val workEvent = newSensorEvent(state = true, workSensor)
+    val workEvent = newSensorEvent(SensorState.On, workSensor)
     EsperHandler.sendEvent(workEvent)
   }
 
@@ -85,13 +84,13 @@ object ExampleTest extends App {
       case ChangeType.Removed => "outSensor"
     }
 
-    val itemsChangedEvent = newSensorEvent(state = true, sensorId)
+    val itemsChangedEvent = newSensorEvent(SensorState.On, sensorId)
 
     handler.sendEvent(itemsChangedEvent)
   }
 
-  def newSensorEvent(state: Boolean, sensorId: String): SensorEvent = {
+  def newSensorEvent(state: SensorState.SensorState, sensorId: String): SensorEvent = {
     numEvents += 1
-    new SensorEvent("SensorEvent_" + numEvents, System.nanoTime(), false, sensorId)
+    new SensorEvent("SensorEvent_" + numEvents, System.nanoTime(), state, sensorId)
   }
 }

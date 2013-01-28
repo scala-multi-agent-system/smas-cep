@@ -1,10 +1,9 @@
 module EPAModule;
 
-//import event classes
+//import event classes and enums
 import de.hsaugsburg.cep.model.*; 
 
-// TODO generate useful event id for all events
-// TODO Ereignisse konsumieren oder Zeitfenster?
+// TODO Ereignisse konsumieren oder Zeitfenster? scheint zu funktionieren, nochmal überprüfen warum
 // TODO eventId und itemId korrekt vergeben
 
 @Name("DetectMoveEvent")
@@ -16,7 +15,7 @@ select 'TestMoveEvent' as eventId,
 	'SomeItem' as itemId,
 	fromSensor.sensorId as sourceId,
 	toSensor.sensorId as targetId
-	from pattern[every fromSensor=SensorEvent(state=false) -> toSensor=SensorEvent(state=true)]
+	from pattern[every fromSensor=SensorEvent(state=SensorState.withName('Off')) -> toSensor=SensorEvent(state=SensorState.withName('On'))]
 	where isNeighbour(fromSensor.sensorId, toSensor.sensorId);
 	
 @Name("DetectItemsChangedEvent")
@@ -27,11 +26,11 @@ select 'NewItemsChangedEvent' as eventId,
 	timestamp as timestamp,
 	'SomeItem' as itemId,
 	getChangeSensorType(sensorId) as changeType
-	from SensorEvent(state=true)
+	from SensorEvent(state=SensorState.withName('On'))
 	where isChangeSensor(sensorId);
 
 @Name("DetectWorkEvent")
-@Description("Detects when a work item is being in manufactured by a machine.")
+@Description("Detects when a work item is being manufactured by a machine.")
 @Drop
 insert into WorkEvent
 select 'NewWorkEvent' as eventId,
@@ -39,7 +38,7 @@ select 'NewWorkEvent' as eventId,
 	'SomeItem' as itemId,
 	getMachineId(sensorId) as workerId,
 	getMachineWorkType(sensorId) as work
-	from SensorEvent(state=true)
+	from SensorEvent(state=SensorState.withName('On'))
 	where isMachineSensor(sensorId);
 
 @Name("AllSensorEvents")

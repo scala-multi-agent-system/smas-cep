@@ -46,7 +46,7 @@ http://www.espertech.com/schema/esper/esper-configuration-4.0.xsd">
 
     <engine-settings>
         <defaults>
-            <execution prioritized="true"/>
+            <execution prioritized="false"/>
         </defaults>
     </engine-settings>
 </esper-configuration>
