@@ -19,7 +19,7 @@ object MockOntology extends OntologyService {
       case "inSensor" => List("sensorDistr01")
       case "sensorDistr01" => List("sensorM01Pos01")
       case "sensorM01Pos01" => List("sensorM01Pos02")
-      case "sensorM01Pos02"  => List("sensorM01Pos03")
+      case "sensorM01Pos02" => List("sensorM01Pos03")
       case "sensorM01Pos03" => List("sensorOut01")
       case "sensorOut01" => List("outSensor")
       case "sensor01" => List("sensor04", "sensor08")
@@ -27,31 +27,33 @@ object MockOntology extends OntologyService {
       case _ => List.empty[String]
     }
   }
-	def isMachineSensor(sensorId: String): Boolean = {
-	  sensorId.startsWith("sensorWork")
-	}
-	
-	def getMachineId(sensorId: String): String = {
-	  "machine01"
-	}
-	def getMachineWorkType(sensorId: String): Work.Work = {
-	  Work.Begin
-	}
-	
-	def isChangeSensor(sensorId: String): Boolean = {
-	  sensorId match {
-	    case "inSensor" => true
-	    case "outSensor" => true
-	    case _ => false
-	  }
-	}
-	
-	def getChangeSensorType(sensorId: String): ChangeType.ChangeType = {
-	  sensorId match {
-	    case "inSensor" => ChangeType.Added
-	    case "outSensor" => ChangeType.Removed
-	    case _ => throw new IllegalStateException("isChangeSensor must return true for the specified sensorId")
-	  }
-	}
+
+  def isMachineSensor(sensorId: String): Boolean = {
+    sensorId.startsWith("sensorWork")
+  }
+
+  def getMachineId(sensorId: String): String = {
+    "machine01"
+  }
+
+  def getMachineWorkType(sensorId: String): Work.Work = {
+    Work.Begin
+  }
+
+  def isChangeSensor(sensorId: String): Boolean = {
+    sensorId match {
+      case "inSensor" => true
+      case "outSensor" => true
+      case _ => false
+    }
+  }
+
+  def getChangeSensorType(sensorId: String): ChangeType.ChangeType = {
+    sensorId match {
+      case "inSensor" => ChangeType.Added
+      case "outSensor" => ChangeType.Removed
+      case _ => throw new IllegalStateException("isChangeSensor must return true for the specified sensorId")
+    }
+  }
 
 }

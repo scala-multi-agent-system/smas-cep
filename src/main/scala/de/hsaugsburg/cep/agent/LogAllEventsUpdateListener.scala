@@ -18,7 +18,7 @@ class LogAllEventsUpdateListener extends UpdateListener {
   }
 
   def handleSingleEvent(eventBean: EventBean) {
-    eventBean.getUnderlying() match {
+    eventBean.getUnderlying match {
       case event: ItemsChangedEvent =>
         log.info("Detected ItemsChangedEvent: " + event.changeType)
       case event: WorkEvent =>
