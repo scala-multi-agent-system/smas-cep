@@ -17,11 +17,11 @@ object ExampleTest extends App {
   private val handler = new EsperHandler(EsperHandler.configFile, EsperHandler.moduleFile)
   private val sleepTime = 250
 
-  handler.getStatement(EsperHandler.AllMoveEvents) addListener new LogAllEventsUpdateListener("MoveEvent")
-  handler.getStatement(EsperHandler.AllWorkEvents) addListener new LogAllEventsUpdateListener("WorkEvent")
-  handler.getStatement(EsperHandler.AllItemsChangedEvents) addListener new LogAllEventsUpdateListener("ItemsChangedEvent")
+  handler.getStatement(EsperHandler.AllMoveEvents) addListener new LogAllEventsUpdateListener()
+  handler.getStatement(EsperHandler.AllWorkEvents) addListener new LogAllEventsUpdateListener()
+  handler.getStatement(EsperHandler.AllItemsChangedEvents) addListener new LogAllEventsUpdateListener()
 
-  testItemsChangedEvent()
+  testWorkflow()
 
   def testWorkflow() {
     // add item
